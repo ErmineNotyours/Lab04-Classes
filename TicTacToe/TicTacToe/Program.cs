@@ -2,7 +2,7 @@
 
 namespace TicTacToe
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -15,39 +15,60 @@ namespace TicTacToe
         }
 
         public static string[,] board = new string[3, 3];
-    //public static player player1, player2 = new player; //Construction for when player class works
-    public static bool player = new bool(); // Temp code because player does not work with classes.  true = player 1, false = player 2
-    
+        //public static player player1, player2 = new player; //Construction for when player class works
+        public static bool player = new bool(); // Temp code because player does not work with classes.  true = player 1, false = player 2
+        public static int counter = 0; // Counts the number of sucessful moves.  If there are nine moves, the game is over.  If a winning move does not come right before this, the game is tied.
+
+
         /// <summary>
         /// Main Menu, display and IO
         /// </summary>
         /// <returns>Returns false</returns>
         public static bool MainMenu()
         {
-            string answer;
-            bool play = true;
-            player = true; // Player 1 is up first.
-            Console.WriteLine("Tic Tac Toe");
-
-            // Initialize the board
-            for (int row = 0; row < 3; row++)
+            bool metaPlay = true; // Play again play in progress
+            while (metaPlay)
             {
-                for (int col = 0; col < 3; col++)
+                string answer;
+                bool play = true; // Individual game in progress
+                player = true; // Player 1 is up first.
+                counter = 0; // placed here again, for repeat plays
+                Console.WriteLine("Tic Tac Toe");
+
+
+                // Initialize the board
+                for (int row = 0; row < 3; row++)
                 {
-                    board [row, col] = "0";
+                    for (int col = 0; col < 3; col++)
+                    {
+                        board[row, col] = "0";
+                    }
                 }
-            }
 
-            while (play)
-            {
+                while (play)
+                {
+                    DisplayBoard();
+                    Console.WriteLine("Player 1 is X, Player 2 is O");
+                    DisplayPlayerUp();
+                    Console.WriteLine("Enter number of board position to move");
+                    answer = ReadChar();
+                    ProcessInput(answer);
+
+                    // check for end of game condition
+                    if (CheckWin())
+                    {
+                        play = false;
+                    }
+                    else if (counter >= 9)
+                    {
+                        play = false;
+                        Console.WriteLine("Game ends in a tie.");
+                    }
+                }
                 DisplayBoard();
-                Console.WriteLine("Player 1 is X, Player 2 is O");
-                DisplayPlayerUp();
-                Console.WriteLine("Enter number of board position to move");
-                answer = Console.ReadLine();
-                ProcessInput(answer);
-                // Check for end of game condition
-
+                Console.WriteLine("Play again, Y/N?");
+                metaPlay = PlayAgain(); // returns true if player wants to play again, otherwise false.
+                play = metaPlay;
             }
 
             return false;
@@ -83,11 +104,11 @@ namespace TicTacToe
         {
             if (player)
             {
-                Console.WriteLine("Player 1 up!");
+                Console.WriteLine("Player 1 'X' up!");
             }
             else
             {
-                Console.WriteLine("Player 2 up!");
+                Console.WriteLine("Player 2 'O' up!");
             }
         }
 
@@ -140,12 +161,14 @@ namespace TicTacToe
             
             if (board[row, col] == "0") // cell has to be empty
             {
+                // A sucessful move
+                counter++;
                 if (player)
                     board[row, col] = "X"; // Player 1 gets X
                 else
                     board[row, col] = "O"; // Player 2 gets O
                 player = !player;          // Sucessful move, players 1 and 2 get flipped
-                Console.Clear();
+                //Console.Clear();
             }
             else
             {
@@ -153,9 +176,111 @@ namespace TicTacToe
             }
         }
 
+        // <summary>
+        /// Checks for winning condition.
+        /// </summary>
+        public static bool CheckWin()
+        {
+            // Check horizontals
+            for (int row = 0; row < 3; row++)
+            {
+                if ((board[row, 0] == board[row, 1]) && (board[row, 1] == board[row, 2]))
+                {
+                    if (board[row, 0] == "X")
+                    {
+                        Console.WriteLine("X Wins!");
+                        return true;
+                    }
+                    if (board[row, 0] == "O")
+                    {
+                        Console.WriteLine("O Wins!");
+                        return true;
+                    }
+                }
+            }
+            // Check verticals
+            for (int col = 0; col < 3; col++)
+            {
+                if ((board[0, col] == board[1, col]) && (board[1, col] == board[2, col]))
+                {
+                    if (board[0, col] == "X")
+                    {
+                        Console.WriteLine("X Wins!");
+                        return true;
+                    }
+                    if (board[0, col] == "O")
+                    {
+                        Console.WriteLine("O Wins!");
+                        return true;
+                    }
+                    //
+
+                 }
+            }
+            // Check diagonals
+            if ((board[0, 0] == board[1, 1]) && (board[1, 1] == board[2, 2]))
+            {
+                if (board[1, 1] == "X")
+                {
+                    Console.WriteLine("X Wins!");
+                    return true;
+                }
+                if (board[1, 1] == "O")
+                {
+                    Console.WriteLine("O Wins!");
+                    return true;
+                }
+            }
+            if ((board[2, 0] == board[1, 1]) && (board[1, 1] == board[0, 2]))
+            {
+                if (board[1, 1] == "X")
+                {
+                    Console.WriteLine("X Wins!");
+                    return true;
+                }
+                if (board[1, 1] == "O")
+                {
+                    Console.WriteLine("O Wins!");
+                    return true;
+                }
+            }
+            // If you've reached this point in the code, a winning condition has not been reached
+            return false;
+        }
+
+        /// <summary>
+        /// Isolated console read for determining if user wants to play again.
+        /// HAS A CONSOLE.READLINE, CANNOT TEST!
+        /// </summary>
+        /// <returns>true if player wants to play again, otherwise false</returns>
+        public static bool PlayAgain()
+        {
+            string response = Console.ReadLine();
+            if (response == "Y" || response == "y")
+                return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Isolated console read for regular game input
+        /// HAS A CONSOLE.READLINE, CANNOT TEST!
+        /// </summary>
+        /// <returns>Character determining board position</returns>
+        public static string ReadChar()
+        {
+            return Console.ReadLine();
+        }
+
+
     }
+
+
+
+
+
     // I followed the class demo code, and it still doesn't work:
-    
+    // Is the class supposed to be here, or in a sperate file?
+
     //public class player
     //{
     //    public player(bool up)
