@@ -10,7 +10,17 @@ namespace TicTacToeTest
         [Fact]
         public void ProcessInputTest()
         {
-           // Assert.Equal(10, ProcessInput("10"));
+            string[,] myArray = new string[,] { { "0", "0" }, { "0", "0" }, { "0", "0" }, { "0", "0" }, { "0", "0" } }; 
+            Assert.Equal(9, Game.ProcessInput("2", myArray , 8, true)); // 3rd parameter must be one less than expected result.  Other parameters have no effect.
         }
+
+        //string[,] myArray = new string[,] { { "0", "0" }, { "0", "0" }, { "0", "0" }, { "0", "0" }, { "0", "0" } };
+
+        //[Theory]
+        //[InlineData ("1", { { "0", "0" }, { "0", "0" }, { "0", "0" }, { "0", "0" }, { "0", "0" } }, 8, 9)]
+        //public void ProcessInputTheoryTest()
+        //{
+            
+        //}
     }
 }
