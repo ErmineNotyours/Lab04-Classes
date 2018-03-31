@@ -24,7 +24,7 @@ namespace TicTacToe
                 string answer;
                 bool play = true; // Individual game in progress
                 bool Player1 = true; // Player 1 is up first.
-                int counter = 0; //  Counts the number of sucessful moves.  If there are nine moves, the game is over.  If a winning move does not come right before this, the game is tied.
+                int counter = 0; //  Counts the number of successful moves.  If there are nine moves, the game is over.  If a winning move does not come right before this, the game is tied.
                 Console.WriteLine("Tic Tac Toe");
 
 
@@ -42,9 +42,12 @@ namespace TicTacToe
                     DisplayBoard(board);
                     Console.WriteLine("Player 1 is X, Player 2 is O");
                     DisplayPlayerUp(Player1);
+
                     Console.WriteLine("Enter number of board position to move");
                     answer = ReadChar();
-                    counter = ProcessInput(answer, board, counter, Player1);
+                    counter = ProcessInput(answer, board, counter, ref Player1);
+                    
+
 
                     // check for end of game condition
                     if (CheckWin(board))
@@ -67,13 +70,13 @@ namespace TicTacToe
         }
 
         /// <summary>
-        /// Process Input.  Contains the switch/case statement for mapping the game board to numbers 1 through 9
+        /// Process Input.  Contains the switch/case statement for mapping the game board to numbers 1 through 9.  Outputs counter for the number of plays, and Player1 for who the current player is.
         /// </summary>
         /// <param name="answer">Number requested to access the board</param>
         /// <param name="board">The board that holds the game state</param>
-        /// <param name="counter">The current turn number.  Advanced here on a sucessful turn</param>
+        /// <param name="counter">The current turn number.  Advanced here on a successful turn</param>
         /// <param name="Player1">State of Player1: true, player1 is playing, false player2 is playing</param>
-        public static int ProcessInput(string answer, string [,] board, int counter, bool Player1)
+        public static int ProcessInput(string answer, string [,] board, int counter, ref bool Player1)
         {
             int row = 0, col = 0;
             switch (answer)
@@ -118,19 +121,20 @@ namespace TicTacToe
 
             if (board[row, col] == "0") // cell has to be empty
             {
-                // A sucessful move
+                // A successful move
                 counter++;
                 if (Player1)
                     board[row, col] = "X"; // Player 1 gets X
                 else
                     board[row, col] = "O"; // Player 2 gets O
-                Player1 = !Player1;        // Sucessful move, players 1 and 2 get flipped
+                Player1 = !Player1;        // Successful move, players 1 and 2 get flipped
                 //Console.Clear();
             }
             else
             {
                 Console.WriteLine("That cell is occupied.  Try again.");
             }
+
             return counter;
         }
 
