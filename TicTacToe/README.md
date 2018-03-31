@@ -2,7 +2,7 @@
 
 **Author**: Arthur Allen
 
-**Version**: 1.0.0 (increment the patch/fix version number up if you make more commits past your first submission)
+**Version**: 1.2.0 (increment the patch/fix version number up if you make more commits past your first submission)
 
 ## Overview
 <!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for a Code Fellows 401 class. (i.e. What's your problem domain?) -->
@@ -25,3 +25,4 @@ C#, xunit testing
 
 01-01-2001 4:59pm - Added functionality to add and delete some things. -->
 3-26-2018 9:15 pm - Final commit, I was only able to make one test.
+3-31-2018 11:48 am - Fixed bug where play never alternates between players.  Added more unit tests.
